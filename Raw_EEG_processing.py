@@ -4,7 +4,7 @@ from torcheeg.datasets import MNEDataset
 
 # INPUTS: 
 # A list of the subject id's (e.g. [1,2,3,4] OR list(range(1,110)) )
-
+#starts at 1
 
 # OUTPTUS:
 # dataset - MNE dataset object from torchEEG
@@ -95,6 +95,6 @@ def load_data(subject_id_list):
             # can use mne.Epochs(picks = Channels) to specify which channels to use
             epochs_list.append(raw_EEG_epochs)
 
-    dataset = MNEDataset(epochs_list = epochs_list, metadata_list = metadata_list, num_worker=1)
+    dataset = MNEDataset(epochs_list = epochs_list, metadata_list = metadata_list, io_mode='pickle', num_worker=1)
 
     return dataset
