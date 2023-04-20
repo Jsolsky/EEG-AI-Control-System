@@ -2,8 +2,7 @@
 
 ## Adding data to your local repo
 - Download and extract the zip from [Dataset](https://physionet.org/content/eegmmidb/1.0.0/)
-- Create a directory caled "Raw_EEG_Data" within the git repo
-- Add the contents the "files" directory found within the downloaded data set into "Raw_EEG_Data"
+- Add the contents of the "files" folder in the downloaded dataset into the contents into the "files" directory of the EEG-AI-CONTROL-SYSTEM repository
 
 ## Installing python prerequites
 - Make sure that you have anaconda [installed](https://www.anaconda.com/products/distribution)
