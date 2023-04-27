@@ -88,13 +88,36 @@ def load_data(subject_id_list):
 
                     action_dict = dict(B=1) # this encodes the annotation for epcohs
             
+
+            mne.datasets.eegbci.standardize(raw_EEG_data)
+
+            montage = mne.channels.make_standard_montage('standard_1005')
+            raw_EEG_data.set_montage(montage)
+
+            raw_EEG_data.filter(7., 30., fir_design='firwin', skip_by_annotation='edge')
+
             raw_EEG_events, summary = mne.events_from_annotations(raw_EEG_data)
             
-            raw_EEG_epochs = mne.Epochs(raw_EEG_data, raw_EEG_events, action_dict, tmin=-1., tmax=4.0, preload=True)
+            print("summary:" , summary)
+            picks = mne.pick_types(raw_EEG_data.info,
+                        meg=False,
+                        eeg=True,
+                        stim=False,
+                        eog=False,
+                        exclude='bads')
+
+            # raw_EEG_epochs = mne.Epochs(raw_EEG_data, raw_EEG_events, action_dict, tmin=-1., tmax=4.0, preload=True)
             # can use mne.Epochs(picks = Channels) to specify which channels to use
-            epochs_list.append(raw_EEG_epochs)
-
+            epochs_list.append(
+                mne.Epochs(raw_EEG_data,
+                    raw_EEG_events,
+                    summary,
+                    tmin=-1.,
+                    tmax=4.0,
+                    proj=True,
+                    picks=picks))
     # dataset = MNEDataset(epochs_list = epochs_list, metadata_list = metadata_list, io_mode='pickle', num_worker=1)
-    dataset = MNEDataset(epochs_list = epochs_list, metadata_list = metadata_list, num_worker=1, io_mode='lmdb')
-
-    return dataset
+    # dataset = MNEDataset(epochs_list = epochs_list, metadata_list = metadata_list, num_worker=1, io_mode='lmdb')
+    
+    return epochs_list, metadata_list
+    # return dataset
