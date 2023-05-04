@@ -1,14 +1,26 @@
 # EEG AI Control System
 
-## Adding data to your local repo
-- Download and extract the zip from [Dataset](https://physionet.org/content/eegmmidb/1.0.0/)
-- Add the contents of the "files" folder in the downloaded dataset into the contents into the "files" directory of the EEG-AI-CONTROL-SYSTEM repository
-
-## Installing python prerequites
-- Make sure that you have anaconda [installed](https://www.anaconda.com/products/distribution)
-- To install MNE using their [guide](https://mne.tools/stable/install/index.html) or run the following within your terminal:
-
+## Adding Raw Data to project
+The [Dataset](https://physionet.org/content/eegmmidb/1.0.0/) is should be placed within the project's directories as such:
 ```
-conda install --channel=conda-forge --name=base mamba
-mamba create --override-channels --channel=conda-forge --name=mne mne
+- EEG-AI-CONTROL-SYSTEM 
+   - AIGeneration
+      - RNN_Model.py
+      - PreProcessingandDataLoading
+      - rawData <-- Data directory
+        - S001
+        - S002
+        - ***
+        - S109
+```
+
+## Installing Python prerequisites
+- To install MNE using their [guide](https://mne.tools/stable/install/index.html) or by running the following within your terminal:
+```
+pip install mne
+```
+- Pytorch should be installed using pip by following their [guide](https://pytorch.org/)
+- TORCHEEG can be installed as follows:
+```
+pip install torcheeg 
 ```

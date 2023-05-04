@@ -14,63 +14,76 @@ from torcheeg.model_selection import KFold
 from torcheeg.models import TSCeption
 from torcheeg.trainers import ClassificationTrainer
 
+# Local Functions
+from PreProcessingandDataLoading.findDataFiles import findDataFiles
+
+
+
+numSubjects = 109
+runNum = ["R06", "R07", "R10"]
+
+data_files = findDataFiles(numSubjects, runNum)
+
+
+print(data_files)
+
 ###############################################################################
 # Pre-experiment Preparation to Ensure Reproducibility
 # -----------------------------------------
 # Use the logging module to store output in a log file for easy reference while printing it to the screen.
 
-os.makedirs('./tmp_out/examples_mne_dataset/log', exist_ok=True)
-logger = logging.getLogger('Examples of MNEDataset')
-logger.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-timeticks = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-file_handler = logging.FileHandler(
-    os.path.join('./tmp_out/examples_mne_dataset/log', f'{timeticks}.log'))
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
+# os.makedirs('./tmp_out/examples_mne_dataset/log', exist_ok=True)
+# logger = logging.getLogger('Examples of MNEDataset')
+# logger.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
+# timeticks = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
+# file_handler = logging.FileHandler(
+#     os.path.join('./tmp_out/examples_mne_dataset/log', f'{timeticks}.log'))
+# logger.addHandler(console_handler)
+# logger.addHandler(file_handler)
 
-###############################################################################
-# Set the random number seed in all modules to guarantee the same result when running again.
-
-
-def seed_everything(seed):
-    random.seed(seed)
-    np.random.seed(seed)
-    os.environ["PYTHONHASHSEED"] = str(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+# ###############################################################################
+# # Set the random number seed in all modules to guarantee the same result when running again.
 
 
-seed_everything(42)
-
-###############################################################################
-# Customize Trainer
-# -----------------------------------------
-# TorchEEG provides a large number of trainers to help complete the training of classification models, generative models and cross-domain methods. Here we choose the simplest classification trainer, inherit the trainer and overload the log function to save the log using our own defined method; other hook functions can also be overloaded to meet special needs.
-#
-
-
-class MyClassificationTrainer(ClassificationTrainer):
-    def log(self, *args, **kwargs):
-        if self.is_main:
-            logger.info(*args, **kwargs)
+# def seed_everything(seed):
+#     random.seed(seed)
+#     np.random.seed(seed)
+#     os.environ["PYTHONHASHSEED"] = str(seed)
+#     torch.manual_seed(seed)
+#     torch.cuda.manual_seed(seed)
+#     torch.backends.cudnn.deterministic = True
+#     torch.backends.cudnn.benchmark = False
 
 
-###############################################################################
-# Read data using MNE and formalize as :obj:`mne.Epochs`
-# -----------------------------------------
-# We use mne's API to automatically download the motor imagery dataset in Physionet. The EEG signals of subjects 1-21 in runs 6, 10, and 14 were downloaded and filtered. We store multiple :obj:`mne.Epochs` into an array, and use a counterpart array :obj:`metadata_list` to describe the metadata corresponding to the corresponding Epochs.
-#
-metadata_list = [{
-    'subject': subject_id,
-    'run': run_id
-} for subject_id in range(1, 22)
-                 for run_id in [6, 10, 14]]  # motor imagery: hands vs feet
+# seed_everything(42)
+
+# ###############################################################################
+# # Customize Trainer
+# # -----------------------------------------
+# # TorchEEG provides a large number of trainers to help complete the training of classification models, generative models and cross-domain methods. Here we choose the simplest classification trainer, inherit the trainer and overload the log function to save the log using our own defined method; other hook functions can also be overloaded to meet special needs.
+# #
 
 
-print(metadata_list)
+# class MyClassificationTrainer(ClassificationTrainer):
+#     def log(self, *args, **kwargs):
+#         if self.is_main:
+#             logger.info(*args, **kwargs)
+
+
+# ###############################################################################
+# # Read data using MNE and formalize as :obj:`mne.Epochs`
+# # -----------------------------------------
+# # We use mne's API to automatically download the motor imagery dataset in Physionet. The EEG signals of subjects 1-21 in runs 6, 10, and 14 were downloaded and filtered. We store multiple :obj:`mne.Epochs` into an array, and use a counterpart array :obj:`metadata_list` to describe the metadata corresponding to the corresponding Epochs.
+# #
+# metadata_list = [{
+#     'subject': subject_id,
+#     'run': run_id
+# } for subject_id in range(1, 22)
+#                  for run_id in [6, 10, 14]]  # motor imagery: hands vs feet
+
+
+# print(metadata_list)
 
 
 
