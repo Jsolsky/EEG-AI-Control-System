@@ -4,3 +4,4 @@ Raw_EEG_Data
 io
 /tmp_out
 /AIGeneration/rawData
+/AIGeneration/tmp_out
